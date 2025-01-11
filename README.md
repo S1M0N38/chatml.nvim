@@ -1,116 +1,121 @@
-<h1 align="center">⛶&nbsp;&nbsp;base.nvim&nbsp;&nbsp;⛶ </h1>
+<div align="center">
+   <h1>⇋&nbsp;&nbsp;chatml.nvim&nbsp;&nbsp;<a href="https://github.com/S1M0N38/ai.nvim">✧</a></h1>
+   <p align="center">
+      <a href="https://github.com/S1M0N38/chatml.nvim/actions/workflows/run-tests.yml">
+      <img alt="Tests workflow" src="https://img.shields.io/github/actions/workflow/status/S1M0N38/chatml.nvim/run-tests.yml?style=for-the-badge&label=Tests"/>
+      </a>
+      <a href="https://luarocks.org/modules/S1M0N38/chatml.nvim">
+      <img alt="LuaRocks release" src="https://img.shields.io/luarocks/v/S1M0N38/chatml.nvim?style=for-the-badge&color=5d2fbf"/>
+      </a>
+      <a href="https://github.com/S1M0N38/chatml.nvim/releases">
+      <img alt="GitHub release" src="https://img.shields.io/github/v/release/S1M0N38/chatml.nvim?style=for-the-badge&label=GitHub"/>
+      </a>
+      <a href="https://www.reddit.com/r/neovim/todo-need-to-add-it/">
+      <img alt="Reddit post" src="https://img.shields.io/badge/post-reddit?style=for-the-badge&label=Reddit&color=FF5700"/>
+      </a>
+   </p>
+   <div><img src="https://github.com/user-attachments/assets/TODO-add-screenshot" alt="Screencast: chatml.nvim example usage"></div>
+   <p><em>OpenAI chat completion request (JSON) ⇋ markdown & sent requests</em></p>
+   <hr>
+</div>
 
-<p align="center">
-  <a href="https://github.com/S1M0N38/base.nvim/actions/workflows/run-tests.yml">
-    <img alt="Run Tests badge" src="https://img.shields.io/github/actions/workflow/status/S1M0N38/base.nvim/run-tests.yml?style=for-the-badge&label=Tests"/>
-  </a>
-  <a href="https://luarocks.org/modules/S1M0N38/base.nvim">
-    <img alt="LuaRocks badge" src="https://img.shields.io/luarocks/v/S1M0N38/base.nvim?style=for-the-badge&color=5d2fbf"/>
-  </a>
-  <a href="https://github.com/S1M0N38/base.nvim/releases">
-    <img alt="GitHub badge" src="https://img.shields.io/github/v/release/S1M0N38/base.nvim?style=for-the-badge&label=GitHub"/>
-  </a>
-  <a href="https://www.reddit.com/r/neovim/comments/195q8ai/template_for_writing_neovim_plugin/">
-    <img alt="Reddit badge" src="https://img.shields.io/badge/post-reddit?style=for-the-badge&label=Reddit&color=FF5700"/>
-  </a>
-</p>
+## 💡 Idea
 
-______________________________________________________________________
+<!--TODO: write the logic behind the plugin.-->
 
-Writing a Neovim plugin has become very easy. Lua rocks! (pun intended), busted, LuaLS, and CI/CD pipelines make the development process a breeze.
+## ⚡️ Requirements
 
-1. Choose a name with the extension `.nvim`, e.g., `your-plugin.nvim`.
-1. On the top right of this page, click on `Use this template` > `Create a new repository` with that name.
-1. Clone your new repo and `cd` into it.
-1. Rename `base` to `your-plugin` in the whole repo.
-1. Rename `S1M0N38` to `your-github-username` in the whole repo.
+- Neovim ≥ **0.10**
+- [cURL](https://curl.se/) (optional)
+- Access to an [OpenAI compatible API](https://github.com/S1M0N38/ai.nvim?tab=readme-ov-file#-llm-providers) (optional)
 
-### 🛠️ Setup
+## 📦 Installation
 
-- **Neovim** (≥ 0.10)
+You can install chatml.nvim using your preferred plugin manager. Here's an example configuration for lazy.nvim:
 
-- **[luarocks](https://luarocks.org/)**, **[busted](https://lunarmodules.github.io/busted/)**, and **[nlua](https://github.com/mfussenegger/nlua)** (macOS [install.sh](https://gist.githubusercontent.com/S1M0N38/44c573db63864bcd1dc0bfc73359fec9/raw/d92e3b3e5f3da1c8557e93250e6e8a7de0f7d09a/install-lua-luarocks-on-macos.sh) and [uninstall.sh](https://gist.githubusercontent.com/S1M0N38/44c573db63864bcd1dc0bfc73359fec9/raw/d92e3b3e5f3da1c8557e93250e6e8a7de0f7d09a/uninstall-lua-luarocks-on-macos.sh) scripts)
-
-- **[lazy.nvim](https://github.com/folke/lazy.nvim)** and **[lazydev.nvim](https://github.com/folke/lazydev.nvim)**
 
 ```lua
+-- Using lazy.nvim
 {
-  {
-    "base.nvim",
-    dir = "/path/to/base.nvim",
-    lazy = false,
-    opts = {},
-    keys = {
-      {
-        "<leader>rb",
-        "<cmd>Lazy reload base.nvim<cr>",
-        desc = "Reload base.nvim",
-        mode = { "n", "v" },
+  "S1M0N38/chatml.nvim",
+  version = "*",
+  opts = {},
+  dependencies = {
+    {
+      -- (Required) Used for parsing various formats
+      "nvim-treesitter/nvim-treesitter",
+      build = ":TSUpdate",
+      opts = {
+        ensure_installed = { "markdown", "markdown_inline", "yaml", "json" },
+      },
+    },
+    {
+      -- (Optional) It is required for sending requests to LLM providers
+      "S1M0N38/ai.nvim",
+      version = ">=1.4.2",
+      opts = {
+        -- (Required) Configure a provider. :help ai-setup or
+        -- https://github.com/S1M0N38/ai.nvim/blob/main/doc/ai.txt
       },
     },
   },
-
-  {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    opts = {
-      library = {
-        "${3rd}/luassert/library",
-        "${3rd}/busted/library",
-        "base.nvim",
-      }
+  keys = {
+    {
+      "<leader>fa",
+      function()
+        --- Setup prompt search for your prefer picker. For LazyVim, use:
+        LazyVim.pick("files", { cwd = "path/to/prompt/directory" })()
+      end,
+      desc = "Find ai-prompts (chatml)",
+      mode = { "n" },
+    },
+    {
+      "<S-CR>",
+      function()
+        require("chatml.llm").chat_completion(vim.api.nvim_get_current_buf())
+      end,
+      desc = "Send requests to LLM",
+      ft = "markdown",
+      mode = { "n" },
+    },
+    {
+      "<C-CR>",
+      function()
+        require("chatml.parse").md_buf_to_json_buf(0, 0)
+        vim.cmd("LspRestart")
+        -- 2 space indentation for JSON in LazyVim:
+        LazyVim.format({ force = true })
+      end,
+      desc = "Convert from markdown to JSON",
+      ft = "markdown",
+      mode = { "n" },
+    },
+    {
+      "<C-CR>",
+      function()
+        require("chatml.parse").json_buf_to_md_buf(0, 0)
+        vim.cmd("LspRestart")
+      end,
+      desc = "Convert from JSON to markdown",
+      ft = "json",
+      mode = { "n" },
     },
   },
 }
 ```
 
-### 📁 Plugin Structure
+## 🚀 Usage
 
-- ***plugin/base.lua*** - the main file, the one loaded by the plugin manager.
+To get started with chatml.nvim, read the documentation with [`:help chatml`](https://github.com/S1M0N38/chatml.nvim/blob/main/doc/chatml.txt). This will provide you with a comprehensive overview of the plugin's features and usage.
 
-- ***spec/base_spec.lua*** - plugin tests. Add other ***\_spec.lua*** files here for further testing.
+> [!NOTE]
+> **Learning Vim/Neovim Documentation**: Vim/Neovim plugins are usually shipped with :help documentation. Learning how to navigate it is a valuable skill. If you are not familiar with it, start with `:help` and read the first 20 lines.
 
-- ***lua/base/***
 
-  - ***init.lua*** - the main file of the plugin, the one loaded by ***plugin/base.lua***.
-  - ***health.lua*** - run checks of the plugin when `:checkhealth base` is called.
-  - ***types.lua*** - a [definition file](https://luals.github.io/wiki/definition-files/) where LuaCATS annotations are defined.
+## 🙏 Acknowledgments
 
-### 🔍 Lua Language Server
-
-[Lua Language Server](https://github.com/luals/lua-language-server?tab=readme-ov-file) (LuaLS) is a language server providing autocompletion, hover, diagnostics, annotations support, formatting. The `lazydev.nvim` plugin takes care of configuring it properly.
-
-- ***.editorconfig*** - file format for defining coding styles (cross-editor).
-
-### 🧪 Tests
-
-[Busted](https://lunarmodules.github.io/busted/) is a unit testing framework for Lua. Using [nlua](https://github.com/mfussenegger/nlua) as Lua interpreter gives you access to Neovim Lua API while running tests. To run tests, simply run `busted` from the root of the plugin.
-
-- ***.busted*** - configuration file for Busted which specifies nlua as the Lua interpreter.
-
-### 📚 Documentation
-
-It's important to document your plugin in the Vim/Neovim way so it's easily accessible from within the editor.
-
-- ***doc/base.txt*** - documentation file for the plugin formatted as vimdoc.
-
-### 📦 CI/CD
-
-It's no secret that the Neovim plugin ecosystem can be brittle. Prove them wrong with:
-
-- ***.github/workflows/***
-  - ***run-tests.yml*** - workflow to run tests on every push to the main branch.
-  - ***run-typecheck.yml*** - workflow to typecheck code on every push.
-  - ***release-github.yml*** - workflow to create a new release on GitHub on every push to the main branch.
-  - ***release-luarocks.yml*** - workflow to create a new release on LuaRocks on every release on GitHub.
-
-Write your commit messages following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification and let the CI/CD do the rest.
-
-### 👏 Resources
-
-Neovim is growing a nice ecosystem, but some parts of plugin development are sometimes obscure. This template is an attempt to put together some best practices. Here are sources on which this template is based and that I constantly refer to:
-
-- [nvim-best-practices](https://github.com/nvim-neorocks/nvim-best-practices): Collection of DOs and DON'Ts for modern Neovim Lua plugin development
-- [nvim-lua-plugin-template](https://github.com/nvim-lua/nvim-lua-plugin-template/): Another template for Neovim Lua plugins
-- [LuaCATS annotations](https://luals.github.io/wiki/annotations/): Add type annotations to your Lua code
-- [Plugin development walkthrough](https://youtu.be/n4Lp4cV8YR0?si=lHlxQBNvbTcXPhVY) by [TJ DeVries](https://github.com/tjdevries): it uses plenary instead of busted for testing
+- [olimorris/codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) tree-sitter yaml parser.
+- [tjdevries/vlog.nvim](https://github.com/tjdevries/vlog.nvim) for logging.
+- [S1M0N38/chat-completion-md](https://github.com/S1M0N38/chat-completion-md) for conversion specification.
+- [S1M0N38/base.nvim](https://github.com/S1M0N38/base.nvim) for template.
+- [S1M0N38/ai.nvim](https://github.com/S1M0N38/ai.nvim) for LLM providers.
