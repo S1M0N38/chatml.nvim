@@ -7,8 +7,6 @@ Check out NOTICE.md for more information about the original code.
 
 local M = {}
 
----@param data any
----@return string
 M.encode = function(data)
   local dt = type(data)
   if data == nil then
@@ -115,15 +113,10 @@ local function decode(source, node)
   end
 end
 
----@param source string|integer
----@param node TSNode
----@return any
 M.decode_node = function(source, node)
   return decode(source, node)
 end
 
----@param str string
----@return any
 M.decode = function(str)
   local lang_tree = vim.treesitter.get_string_parser(str, "yaml", { injections = { yaml = "" } })
   local root = lang_tree:parse()[1]:root()
