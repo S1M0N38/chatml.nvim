@@ -26,6 +26,8 @@ chatml.nvim is a simple Neovim plugin for working with LLM chat completion reque
 - A human-friendly markdown format: readable and easy to edit and navigate
 - The JSON format required by OpenAI-compatible APIs
 
+It follows the [chat-completion-md](https://github.com/S1M0N38/chat-completion-md) specification.
+
 While the plugin can send requests to LLM providers, it keeps a modest scope. It doesn't try to be context-aware or integrate with your development environment. Instead, it's just a playground for experimenting with prompts, letting you focus on crafting and refining your LLM interactions.
 
 Think of it as a basic text converter with optional LLM integration, not a comprehensive AI coding assistant.
