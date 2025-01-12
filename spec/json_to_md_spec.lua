@@ -8,7 +8,9 @@ end
 
 describe("[#parse #json_to_md] json_to_md function tests", function()
   local data_path = "spec/data/json_to_md"
+  ---@diagnostic disable-next-line
   local json_files = vim.fn.globpath(data_path, "example_*.json", false, true)
+  ---@diagnostic disable-next-line
   local md_files = vim.fn.globpath(data_path, "example_*.md", false, true)
 
   for i = 1, #json_files do
@@ -73,6 +75,7 @@ describe("[#parse #json_buf_to_md_buf] json_buf_to_md_buf function tests", funct
 
   it("convert json buffer to markdown buffer (same in/out buffer)", function()
     out_buf = json_buf_to_md_buf(in_buf, in_buf)
+    assert(out_buf ~= nil)
     local output_md = table.concat(vim.api.nvim_buf_get_lines(out_buf, 0, -1, false), "\n")
     assert.are.equal(out_buf, in_buf)
     assert.are.equal(expected_md, output_md)
@@ -80,6 +83,7 @@ describe("[#parse #json_buf_to_md_buf] json_buf_to_md_buf function tests", funct
 
   it("convert json buffer to markdown buffer (diff in/out buffer)", function()
     out_buf = json_buf_to_md_buf(in_buf)
+    assert(out_buf ~= nil)
     local output_md = table.concat(vim.api.nvim_buf_get_lines(out_buf, 0, -1, false), "\n")
     assert.are_not.equal(out_buf, in_buf)
     assert.are.equal(expected_md, output_md)

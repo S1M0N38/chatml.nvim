@@ -20,6 +20,11 @@ M.json_to_md = function(json_str)
     error("Invalid JSON string")
   end
 
+  if json_data == nil then
+    log.debug("Parsed (json) data is nil")
+    error("Parsed (json) data is nil")
+  end
+
   -- Check for and extract the "messages" key
   local messages = json_data["messages"]
   if not messages then
