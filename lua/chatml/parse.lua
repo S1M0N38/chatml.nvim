@@ -81,6 +81,7 @@ M.json_buf_to_md_buf = function(in_buf, out_buf)
     out_buf = out_buf or vim.api.nvim_create_buf(false, true)
     vim.api.nvim_set_option_value("filetype", "markdown", { buf = out_buf })
     vim.api.nvim_buf_set_lines(out_buf, 0, -1, false, vim.split(md_str, "\n"))
+    return out_buf
   else
     log.debug("Generated md_str is nil")
     error("Generated md_str is nil")
