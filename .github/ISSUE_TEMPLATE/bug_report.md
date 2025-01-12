@@ -13,31 +13,12 @@ assignees: S1M0N38
 - *Plugin* \[e.g. 0.1.1\]
 
 
-## Test with `minimal.lua`
+## Test with `repro.lua`
 
 >[!IMPORTANT]
 > Please do not skip this step. For most users, issues occur because of their Neovim configuration.
 
-1. Create the file `repro.lua` with the following content
-
-```lua
-vim.env.LAZY_STDPATH = ".repro"
-load(vim.fn.system("curl -s https://raw.githubusercontent.com/folke/lazy.nvim/main/bootstrap.lua"))()
-
-local plugins = {
-  {
-    "S1M0N38/base.nvim",
-    lazy = false,
-    opts = {
-      -- plugin options
-    },
-  },
-}
-
-require("lazy.minit").repro({ spec = plugins })
-
--- Add additional setup here ...
-```
+1. Create the file `repro.lua` with the content of `chatml/repro/repro.lua`
 
 2. Run Neovim using `repro.lua` as config:
 
