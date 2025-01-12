@@ -26,3 +26,5 @@ jobs:
         uses: nvim-neorocks/nvim-busted-action@v1
         with:
           nvim_version: ${{ matrix.neovim_version }}
+          before: |
+            cp /home/runner/.luarocks/lib/luarocks/rocks-5.1/tree-sitter-yaml/0.0.30-1/lib/parser/yaml.so $HOME/.luarocks/lib/lua/5.1/parser/yaml.so
