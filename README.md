@@ -21,7 +21,15 @@
 
 ## 💡 Idea
 
-<!--TODO: write the logic behind the plugin.-->
+chatml.nvim is a simple Neovim plugin for working with LLM chat completion requests. It provides bidirectional conversion between two formats:
+
+- A human-friendly markdown format: readable and easy to edit and navigate
+- The JSON format required by OpenAI-compatible APIs
+
+While the plugin can send requests to LLM providers, it keeps a modest scope. It doesn't try to be context-aware or integrate with your development environment. Instead, it's just a playground for experimenting with prompts, letting you focus on crafting and refining your LLM interactions.
+
+Think of it as a basic text converter with optional LLM integration, not a comprehensive AI coding assistant.
+
 
 ## ⚡️ Requirements
 
@@ -63,8 +71,8 @@ You can install chatml.nvim using your preferred plugin manager. Here's an examp
     {
       "<leader>fa",
       function()
-        --- Setup prompt search for your prefer picker. For LazyVim, use:
-        LazyVim.pick("files", { cwd = "path/to/prompt/directory" })()
+        --- Setup prompts search for your preferred picker. For LazyVim, use:
+        LazyVim.pick("files", { cwd = "path/to/prompts/directory" })()
       end,
       desc = "Find ai-prompts (chatml)",
       mode = { "n" },
