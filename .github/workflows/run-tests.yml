@@ -20,11 +20,9 @@ jobs:
         neovim_version: ["stable"]
 
     steps:
+      - uses: tree-sitter/setup-action@v2
       - uses: actions/checkout@v3
       - name: Run tests
         uses: nvim-neorocks/nvim-busted-action@v1
         with:
           nvim_version: ${{ matrix.neovim_version }}
-          before: |
-            nvim -l /home/runner/work/chatml.nvim/chatml.nvim/repro/tests.lua
-            nvim -c "TSInstall yaml" -c "sleep 5" -c "qa"

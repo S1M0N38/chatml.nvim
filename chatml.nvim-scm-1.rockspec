@@ -19,6 +19,7 @@ dependencies = {
 
 test_dependencies = {
 	"nlua",
+	"tree-sitter-yaml",
 }
 
 source = {
