@@ -2,7 +2,7 @@ return {
 	_all = {
 		coverage = false,
 		lpath = "lua/?.lua;lua/?/init.lua",
-		lua = "nlua -u /home/runner/work/chatml.nvim/chatml.nvim/repro/repro.lua",
+		lua = "nlua",
 	},
 	default = {
 		verbose = true,
