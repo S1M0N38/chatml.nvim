@@ -19,4 +19,4 @@ local plugins = {
 }
 
 -- Setup lazy.nvim
-require("lazy.minit").busted({ spec = plugins })
+require("lazy.minit").repro({ spec = plugins })
