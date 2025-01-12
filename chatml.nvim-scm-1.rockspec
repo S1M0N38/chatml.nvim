@@ -19,7 +19,6 @@ dependencies = {
 
 test_dependencies = {
 	"nlua",
-	"nvim-treesitter",
 }
 
 source = {
