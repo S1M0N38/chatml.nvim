@@ -20,5 +20,3 @@ local plugins = {
 
 -- Setup lazy.nvim
 require("lazy.minit").busted({ spec = plugins })
-
-vim.cmd("checkhealth")
