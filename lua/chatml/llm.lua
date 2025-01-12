@@ -109,7 +109,7 @@ M.chat_completion = function(in_buf, out_buf)
   out_buf = out_buf or in_buf
   vim.api.nvim_buf_set_lines(out_buf, 0, -1, false, vim.split(md_str, "\n"))
 
-  log.info("request: ", request)
+  log.debug("request: ", request)
   vim.notify(string.format("Sending request to %s...(%d messages)", M.client.base_url, #request.messages))
 
   M.client:chat_completion_create(request, on_chat_completion(out_buf), on_chat_completion_chunk(out_buf))
