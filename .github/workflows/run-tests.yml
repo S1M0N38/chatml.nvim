@@ -26,4 +26,4 @@ jobs:
         with:
           nvim_version: ${{ matrix.neovim_version }}
           before: |
-            nvim -c "TSInstall yaml"
+            /home/runner/nvim-stable/bin/nvim --headless +TSInstall\ yaml +qa
