@@ -30,10 +30,10 @@
 -- lua/chatml/parse.lua ---------------------------------------------------------
 
 ---@class ChatMLParse
----@field json_to_md fun(json_str: string): string
----@field json_buf_to_md_buf fun(in_buf: integer, out_buf: integer?): integer
----@field md_to_json fun(md_str: string): string
----@field md_buf_to_json_buf fun(in_buf: integer, out_buf: integer?): integer
+---@field json_to_md fun(json_str: string): string|nil
+---@field json_buf_to_md_buf fun(in_buf: integer, out_buf: integer?): integer|nil
+---@field md_to_json fun(md_str: string): string|nil
+---@field md_buf_to_json_buf fun(in_buf: integer, out_buf: integer?): integer|nil
 
 -- lua/chatml/llm.lua -----------------------------------------------------------
 

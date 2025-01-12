@@ -11,7 +11,7 @@ local M = {}
 ---Convert JSON string of chat completion request to markdown
 ---It follow the specification of https://github.com/S1M0N38/chat-completion-md
 ---@param json_str string: JSON string of chat completion request
----@return string: markdown string of chat completion request
+---@return string|nil: markdown string of chat completion request
 M.json_to_md = function(json_str)
   -- Parse the JSON string
   local ok, json_data = pcall(vim.json.decode, json_str, { luanil = { object = true, array = true } })
@@ -63,7 +63,7 @@ end
 ---Convert JSON buffer to markdown buffer using json_to_md
 ---@param in_buf number: input JSON buffer number
 ---@param out_buf number?: output markdown buffer number
----@return number: output markdown buffer number
+---@return number|nil: output markdown buffer number
 M.json_buf_to_md_buf = function(in_buf, out_buf)
   local in_ft = vim.api.nvim_get_option_value("filetype", { buf = in_buf })
   if in_ft ~= "json" then
@@ -72,10 +72,14 @@ M.json_buf_to_md_buf = function(in_buf, out_buf)
   end
   local json_str = table.concat(vim.api.nvim_buf_get_lines(in_buf, 0, -1, false), "\n")
   local md_str = M.json_to_md(json_str)
-  out_buf = out_buf or vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_set_option_value("filetype", "markdown", { buf = out_buf })
-  vim.api.nvim_buf_set_lines(out_buf, 0, -1, false, vim.split(md_str, "\n"))
-  return out_buf
+  if md_str then
+    out_buf = out_buf or vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_set_option_value("filetype", "markdown", { buf = out_buf })
+    vim.api.nvim_buf_set_lines(out_buf, 0, -1, false, vim.split(md_str, "\n"))
+  else
+    log.debug("Generated md_str is nil")
+    error("Generated md_str is nil")
+  end
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -85,7 +89,7 @@ end
 ---Convert markdown string of chat completion request to JSON
 ---It follow the specification of https://github.com/S1M0N38/chat-completion-md
 ---@param md_str string: markdown string of chat completion request
----@return string: JSON string of chat completion request.
+---@return string|nil: JSON string of chat completion request.
 M.md_to_json = function(md_str)
   -- Extract front matter and content using pattern matching
   local front_matter, content = md_str:match("^%-%-%-\n(.-)\n%-%-%-(.*)$")
@@ -104,7 +108,12 @@ M.md_to_json = function(md_str)
 
   log.debug("config: ", config)
 
-  if not config.model then
+  if config == nil then
+    log.debug("Parsed (yaml) config is nil")
+    error("Parsed (yaml) config is nil")
+  end
+
+  if config ~= nil or not config.model then
     log.debug("Model key not found in front matter")
     error("Model key not found in front matter")
   end
@@ -155,7 +164,7 @@ end
 ---Convert markdown buffer to JSON buffer using md_to_json
 ---@param in_buf number: input markdown buffer number
 ---@param out_buf number?: output JSON buffer number
----@return number: output JSON buffer number
+---@return number|nil: output JSON buffer number
 M.md_buf_to_json_buf = function(in_buf, out_buf)
   local in_ft = vim.api.nvim_get_option_value("filetype", { buf = in_buf })
   if in_ft ~= "markdown" then
@@ -164,10 +173,15 @@ M.md_buf_to_json_buf = function(in_buf, out_buf)
   end
   local md_str = table.concat(vim.api.nvim_buf_get_lines(in_buf, 0, -1, false), "\n")
   local json_str = M.md_to_json(md_str)
-  out_buf = out_buf or vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_set_option_value("filetype", "json", { buf = out_buf })
-  vim.api.nvim_buf_set_lines(out_buf, 0, -1, false, vim.split(json_str, "\n"))
-  return out_buf
+  if json_str then
+    out_buf = out_buf or vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_set_option_value("filetype", "json", { buf = out_buf })
+    vim.api.nvim_buf_set_lines(out_buf, 0, -1, false, vim.split(json_str, "\n"))
+    return out_buf
+  else
+    log.debug("Generated md_str is nil")
+    error("Generated md_str is nil")
+  end
 end
 
 ----------------------------------------------------------------------------------------------------
