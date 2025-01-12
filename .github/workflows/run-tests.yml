@@ -25,5 +25,3 @@ jobs:
         uses: nvim-neorocks/nvim-busted-action@v1
         with:
           nvim_version: ${{ matrix.neovim_version }}
-          before: |
-            /home/runner/nvim-stable/bin/nvim --headless +"if empty(globpath(&rtp, 'parser/yaml.*')) | TSInstall yaml | sleep 5 | else | echo 'yaml parser already installed' | endif" +qa

@@ -28,6 +28,7 @@ local plugins = {
       {
         "S1M0N38/ai.nvim",
         version = ">=1.4.2",
+        enabled = false, -- NOTE: set this to to true to enable the plugin
         opts = {
 
           --NOTE: select one of the following providers:
@@ -84,6 +85,7 @@ local plugins = {
 
 require("lazy.minit").repro({ spec = plugins })
 
+vim.cmd("checkhealth")
 -- Add additional setup here ...
 
 -- RESOURCES:
