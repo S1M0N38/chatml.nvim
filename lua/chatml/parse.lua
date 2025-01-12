@@ -119,7 +119,7 @@ M.md_to_json = function(md_str)
     error("Parsed (yaml) config is nil")
   end
 
-  if config ~= nil or not config.model then
+  if config ~= nil and not config.model then
     log.debug("Model key not found in front matter")
     error("Model key not found in front matter")
   end
