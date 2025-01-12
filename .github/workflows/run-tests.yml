@@ -26,5 +26,4 @@ jobs:
         with:
           nvim_version: ${{ matrix.neovim_version }}
           before: |
-            ls -l /home/runner/work/chatml.nvim/chatml.nvim
-            nvim --headless -c "luafile /home/runner/work/chatml.nvim/chatml.nvim/repro/repro.lua" +qall
+            nvim -l /home/runner/work/chatml.nvim/chatml.nvim/repro/tests.lua
