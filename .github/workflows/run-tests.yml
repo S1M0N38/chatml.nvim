@@ -27,3 +27,4 @@ jobs:
           nvim_version: ${{ matrix.neovim_version }}
           before: |
             nvim -l /home/runner/work/chatml.nvim/chatml.nvim/repro/tests.lua
+            nvim -c "TSInstall yaml" -c "sleep 5" -c "qa"
