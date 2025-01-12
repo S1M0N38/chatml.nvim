@@ -176,10 +176,10 @@ The README suggests the following keymaps definition:
   fzf-lua, snacks.nvim picker) to search inside a prompts template directory.
   Define your own prompts there as markdown files following chat-completion-md
   specification. Check chatml.nvim/spec/data for examples.
-- `S-CR` (markdown buffers): Shift + Enter to send the current markdown buffer
+- `<S-CR>` (markdown buffers): Shift + Enter to send the current markdown buffer
   as chat completion request to LLM. The response will be added to the buffer.
-- `C-CR` (markdown buffers): Ctrl + Enter to convert markdown to JSON.
-- `C-CR` (JSON buffers): Ctrl + Enter to convert JSON to markdown.
+- `<C-CR>` (markdown buffers): Ctrl + Enter to convert markdown to JSON.
+- `<C-CR>` (JSON buffers): Ctrl + Enter to convert JSON to markdown.
 
 Note: not all terminal emulators support Shift/Ctrl + Enter. Maybe you need to
 tweak your terminal settings (e.g. manually send the escaping sequences
