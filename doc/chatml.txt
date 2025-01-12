@@ -1,87 +1,271 @@
 ================================================================================
-INTRODUCTION                                                            *base*
+INTRODUCTION                                                          *chatml*
 
-base.nvim is a template plugin for Neovim that serves as a starting point for
-creating new plugins. It provides a structured foundation with best practices
-for modern Neovim plugin development.
+chatml.nvim is a Neovim plugin that helps working with OpenAI chat completion
+requests by converting between markdown and JSON formats following
+chat-completion-md (https://github.com/S1M0N38/chat-completion-md)
+specification.
+
+Optionally it can perform requests and get responses from LLM providers.
+All OpenAI compatible APIs providers are supported (Local models, Copilot,
+OpenAI, Groq, Mistral, etc.).
+
+It's meant to be a sort of playground for developers experimenting, crafting
+and refining LLM requests, not a full-fledged AI plugin like
+codecompanion.nvim and avante.nvim.
+
 
 Table of contents:
 
-1. REQUIREMENTS: Plugin dependencies and setup.            |base-requirements|
-2. INSTALLATION: How to install the plugin.                |base-installation|
-3. CONFIGURATION: Available options and their defaults.          |base-config|
-4. COMMANDS: Commands provided by the plugin.                  |base-commands|
-5. FUNCTIONS: Lua functions exposed by the plugin.            |base-functions|
+1. REQUIREMENTS: Plugin dependencies and setup.          |chatml-requirements|
+2. INSTALLATION: How to install the plugin.              |chatml-installation|
+3. CONFIGURATION: Available options and their defaults.        |chatml-config|
+4. KEYMAPS: Example keymaps setup for the plugin.             |chatml-keymaps|
+5. FUNCTIONS: Lua functions exposed by the plugin.          |chatml-functions|
 
 ================================================================================
-REQUIREMENTS                                               *base-requirements*
+REQUIREMENTS                                             *chatml-requirements*
 
-Before using base.nvim, ensure you have the following:
+Before using chatml.nvim, ensure you have the following:
 
 - Neovim (>= 0.10)
-- luarocks (https://luarocks.org/)
-- busted (https://lunarmodules.github.io/busted/)
-- nlua (https://github.com/mfussenegger/nlua)
 
-For development:
-- lazy.nvim (https://github.com/folke/lazy.nvim)
-- lazydev.nvim (https://github.com/folke/lazydev.nvim)
+For sending requests to LLM providers (Optional):
 
-================================================================================
-INSTALLATION                                               *base-installation*
+- cURL (https://curl.se/)
+- Access to an OpenAI compatible API
+  (https://github.com/S1M0N38/ai.nvim?tab=readme-ov-file#-llm-providers)
 
-It's recommended to use a plugin manager like lazy.nvim to install base.nvim:
-
->lua
-    { "S1M0N38/base.nvim", opts = { } }
-<
 
 ================================================================================
-CONFIGURATION                                                    *base-config*
+INSTALLATION                                             *chatml-installation*
 
-                                                                *base.setup()*
-base.setup({opts}) ~
-
-The `base.setup()` function sets up the plugin with user-provided options.
-Here are the available options:
+It's recommended to use a plugin manager to install chatml.nvim. For example,
+using `lazy.nvim`:
 
 >lua
   {
-    name = "John Doe" -- The name of the user (default)
+    "S1M0N38/chatml.nvim",
+    version = "*",
+    opts = {},
+    dependencies = {
+      {
+        -- (Required) Used for parsing various formats
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        opts = {
+          ensure_installed = { "markdown", "markdown_inline", "yaml", "json" },
+        },
+      },
+      {
+        -- (Optional) It is required for sending requests to LLM providers
+        "S1M0N38/ai.nvim",
+        version = ">=1.4.2",
+        opts = {
+          -- (Required) Configure a provider. :help ai-setup or
+          -- https://github.com/S1M0N38/ai.nvim/blob/main/doc/ai.txt
+        },
+      },
+    },
+    keys = {
+      -- Setup keymaps for chatml.nvim.
+    },
   }
 <
 
+
+Note: run `:checkhealth chatml` to check if the plugin is installed correctly.
+
+Here is a breakdown of the previous code block:
+
+- `S1M0N38/chatml.nvim`: The plugin's GitHub repository.
+- `version`: pin version. See |lazy.nvim-🔌-plugin-spec-versioning|.
+- `opts`: A table with plugin options. See |chatml.setup()|.
+- `dependencies`: A list of dependencies required/optional by the plugin.
+- `keys`: convenient lazy.nvim way to setup keymaps. Checkout |chatml-keymaps|.
+
+The only required dependency is `nvim-treesitter/nvim-treesitter`. TreeSitter
+is used for parsing markdown metadata formatted as YAML. TreeSitter is a
+pretty common library and there is a high chance you already have it installed,
+just ensure to install the required parsers (`ensure_installed` should take
+care of that or you can install them manually).
+
+If you want to send requests to LLM providers, you need to specify
+`S1M0N38/ai.nvim` as a dependency. It's a dead-simple Neovim library to interact
+with LLM providers which support OpenAI compatible API using cURL. In its opts
+table, you need to provide the configuration for the LLM of your choice. It's
+highly recommended to check out the `ai.nvim` documentation. Run `:help
+ai-nvim` or visit https://github.com/S1M0N38/ai.nvim/blob/main/doc/ai.txt
+
+Note: `chatml.nvim` works with markdown and JSON files. So every other plugin
+enhancing Neovim experience for those filetypes can be used to complement the
+functionality of `chatml.nvim`. For example:
+
+- `MeanderingProgrammer/render-markdown.nvim` to improve viewing markdown
+  files (headings, code blocks, horizontal breaks, ...)
+- `stevearc/conform.nvim` + `jq` to format JSON files. Two space indentation
+  greatly improves readability.
+- `markdown & json treesitter parsers`: motion, highlight, fold, etc.
+
+A drawback of using strict custom formatting for encoding requests in pure
+markdown files is that markdown formatters can break it. Avoid using markdown
+formatters when dealing with `chatml.nvim` markdown files.
+
 ================================================================================
-COMMANDS                                                       *base-commands*
+CONFIGURATION                                                  *chatml-config*
 
-base.nvim provides the following command:
+It's pretty common for Neovim plugins to have a `setup()` function that sets
+up the plugin with user-provided options (see |chatml.setup()|). However, at
+its current state, `chatml.nvim` does not have any options. The setup function
+is present if custom options are added in the future.
 
-:Base [subcommand] ~
-  Execute a base.nvim subcommand. Available subcommands:
-  - `hello`: Say hello to the user
-  - `bye`: Say bye to the user
-
-  If no subcommand is provided or an invalid subcommand is used, an error
-  message will be displayed.
+The way that you can define `chatml.nvim` behavior is through simple
+functions that make use of |chatml-functions|. See |chatml-keymaps| for
+examples.
 
 ================================================================================
-FUNCTIONS                                                     *base-functions*
+KEYMAPS                                                       *chatml-keymaps*
 
-base.nvim exposes the following Lua functions:
+`chatml.nvim` does not provide UserCommands or default keymaps. However, it
+exposes a few Lua functions that can be used to define your own keymaps.
+Checkout |chatml-functions| for a complete list of available functions.
 
-                                                                *base.setup()*
-base.setup({opts}) ~
-  Set up the plugin with the given options. See |base-config| for available
-  options.
+Here is an example of a keymap defined using Neovim built-in |vim.keymap|
+and |autocommand|. The keymap is only defined on markdown buffers.
 
-                                                                *base.hello()*
-base.hello() ~
-  Say hello to the user. Returns a string with the greeting message.
+>lua
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("chatml-keymaps", { clear = true }),
+    pattern = "markdown",
+    callback = function(event)
+      -- Define keymap for <S-CR> in normal mode ("n")
+      vim.keymap.set("n", "<S-CR>", function()
+        -- use chatml.nvim functions to send the requests to LLM
+        require("chatml.llm").chat_completion(event.buf)
+      end, { desc = "Send requests to LLM test", buffer = event.buf })
+    end,
+  })
+<
 
-                                                                  *base.bye()*
-base.bye() ~
-  Say bye to the user. Returns a string with the farewell message.
+This is equivalent to defining an entry in lazy.vim `keys` table like in
+README.
 
+>lua
+  {
+    "S1M0N38/chatml.nvim",
+    -- other config options ...
+    keys = {
+      {
+        "<S-CR>",
+        function()
+          local buf = vim.api.nvim_get_current_buf()
+          require("chatml.llm").chat_completion(buf)
+        end,
+        desc = "Send requests to LLM",
+        ft = "markdown",
+        mode = { "n" },
+      },
+      -- other keymaps ...
+    },
+  }
+<
+
+The README suggests the following keymaps definition:
+
+- `<leader>fa` (globally): use a file picker (telescope.nvim, mini.pick,
+  fzf-lua, snacks.nvim picker) to search inside a prompts template directory.
+  Define your own prompts there as markdown files following chat-completion-md
+  specification. Check chatml.nvim/spec/data for examples.
+- `S-CR` (markdown buffers): Shift + Enter to send the current markdown buffer
+  as chat completion request to LLM. The response will be added to the buffer.
+- `C-CR` (markdown buffers): Ctrl + Enter to convert markdown to JSON.
+- `C-CR` (JSON buffers): Ctrl + Enter to convert JSON to markdown.
+
+Note: not all terminal emulators support Shift/Ctrl + Enter. Maybe you need to
+tweak your terminal settings (e.g. manually send the escaping sequences
+`\x1b[13;2u` and `\x1b[13;5u`).
+
+================================================================================
+FUNCTIONS                                                   *chatml-functions*
+
+chatml.nvim exposes the following Lua functions:
+
+                                                                 *chatml.init*
+                                                              *chatml.setup()*
+chatml.setup({opts}) ~
+  Set up the plugin with the given options. Currently no options are available,
+  but the setup function exists for future extensibility.
+
+  Parameters: ~
+    {opts} Table of options (currently empty)
+
+
+                                                                *chatml.parse*
+                                                   *chatml.parse.json_to_md()*
+chatml.parse.json_to_md({json_str}) ~
+  Convert JSON string of chat completion request to markdown following the
+  chat-completion-md specification.
+
+  Parameters: ~
+    {json_str} String containing valid JSON chat completion request
+
+  Return: ~
+    String containing markdown formatted chat completion request
+
+
+                                           *chatml.parse.json_buf_to_md_buf()*
+chatml.parse.json_buf_to_md_buf({in_buf}[, {out_buf}]) ~
+  Convert a buffer containing JSON to a buffer containing markdown using
+  json_to_md().
+
+  Parameters: ~
+    {in_buf}  Number of the input JSON buffer
+    {out_buf} Optional number of output markdown buffer. If not provided, a
+      new buffer will be created.
+
+  Return: ~
+    Number of the output markdown buffer
+
+
+                                                   *chatml.parse.md_to_json()*
+chatml.parse.md_to_json({md_str}) ~
+  Convert markdown string of chat completion request to JSON following the
+  chat-completion-md specification.
+
+  Parameters: ~
+    {md_str} String containing valid markdown chat completion request
+
+  Return: ~
+    String containing JSON formatted chat completion request
+
+
+                                           *chatml.parse.md_buf_to_json_buf()*
+chatml.parse.md_buf_to_json_buf({in_buf}[, {out_buf}]) ~
+  Convert a buffer containing markdown to a buffer containing JSON using
+  md_to_json().
+
+  Parameters: ~
+    {in_buf}  Number of the input markdown buffer
+    {out_buf} Optional number of output JSON buffer. If not provided, a new
+      buffer will be created.
+
+  Return: ~
+    Number of the output JSON buffer
+
+
+                                                                  *chatml.llm*
+                                                *chatml.llm.chat_completion()*
+chatml.llm.chat_completion({in_buf}[, {out_buf}]) ~
+  Send chat completion request to LLM and add response to output buffer. The
+  input buffer must be in markdown format.
+
+  Parameters: ~
+    {in_buf}  Number of the input markdown buffer containing the request
+    {out_buf} Optional number of output markdown buffer for the response. If
+      not provided, the response will be added to the input buffer.
+
+
+Note: Lua annotations (LuaCATS) are defined in `lua/chatml/types.lua`.
 
 ================================================================================
 vim:tw=78:ts=8:et:ft=help:norl:
