@@ -10,7 +10,7 @@
      <a href="https://github.com/S1M0N38/chatml.nvim/releases">
      <img alt="GitHub release" src="https://img.shields.io/github/v/release/S1M0N38/chatml.nvim?style=for-the-badge&label=GitHub"/>
      </a>
-     <a href="https://www.reddit.com/r/neovim/todo-need-to-add-it/">
+     <a href="https://www.reddit.com/r/neovim/comments/1i0bq49/chatmlnvim_convert_markdown_to_llm_json_requests/">
      <img alt="Reddit post" src="https://img.shields.io/badge/post-reddit?style=for-the-badge&label=Reddit&color=FF5700"/>
      </a>
   </p>
