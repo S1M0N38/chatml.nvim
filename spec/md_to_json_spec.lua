@@ -1,6 +1,9 @@
 local md_to_json = require("chatml.parse").md_to_json
 local md_buf_to_json_buf = require("chatml.parse").md_buf_to_json_buf
 
+local parser_path = os.getenv("HOME") .. "/.luarocks/lib/luarocks/rocks-5.1/tree-sitter-yaml/0.0.30-1"
+vim.opt.runtimepath:append(parser_path)
+
 local function read_file(filepath)
   local lines = vim.fn.readfile(filepath)
   return table.concat(lines, "\n")
