@@ -129,3 +129,4 @@ To get started with chatml.nvim, read the documentation with [`:help chatml`](ht
 - [S1M0N38/chat-completion-md](https://github.com/S1M0N38/chat-completion-md) for conversion specification.
 - [S1M0N38/base.nvim](https://github.com/S1M0N38/base.nvim) for template.
 - [S1M0N38/ai.nvim](https://github.com/S1M0N38/ai.nvim) for LLM providers.
+- [mrcjkb](https://github.com/nvim-neorocks/nvim-busted-action/discussions/8) for GitHub Actions help.
