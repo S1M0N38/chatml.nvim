@@ -19,7 +19,7 @@ dependencies = {
 
 test_dependencies = {
 	"nlua",
-	"tree-sitter-yaml == 0.0.30-1",
+	"tree-sitter-yaml",
 }
 
 source = {
