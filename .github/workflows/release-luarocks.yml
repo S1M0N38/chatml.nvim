@@ -3,7 +3,6 @@
 #   It use .github/workflow/.luarc.json as config file
 #   https://github.com/nvim-neorocks/luarocks-tag-release
 
-
 # NOTE: you need to create a LUAROCKS_API_KEY in order to publish your plugin on LuaRocks
 #  Follow https://github.com/nvim-neorocks/sample-luarocks-plugin
 
@@ -12,7 +11,7 @@ name: Release LuaRocks
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -29,7 +28,5 @@ jobs:
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
         with:
-          detailed_description: |
-            A template for Neovim plugin
           copy_directories: |
             {{ neovim.plugin.dirs }}
