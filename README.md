@@ -14,7 +14,7 @@
      <img alt="Reddit post" src="https://img.shields.io/badge/post-reddit?style=for-the-badge&label=Reddit&color=FF5700"/>
      </a>
   </p>
-  <div><img src="https://github.com/user-attachments/assets/85ccd14f-58bd-4ce9-a1a7-a9c62d525cdf" alt="Screencast: chatml.nvim example usage"></div>
+  <div><video src="https://github.com/user-attachments/assets/6d19405c-a683-4511-888f-77423a42beb9" alt="Screencast: chatml.nvim example usage"></div>
   <p><em>OpenAI chat completion request (JSON) ⇋ markdown & sent requests</em></p>
   <hr>
 </div>
